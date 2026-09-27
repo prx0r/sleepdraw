@@ -21,6 +21,14 @@ Each channel = imprint: house style + film studio + books + prints.
 Same machine (bible → flow → draw → voice → chain → ship), different world.
 Proven by Bremen: drawn + animated Grimm, read slowly, on the dash.
 
+## Sanskrit decision: ONE brand (2026-09-27)
+
+**SVATANTRYA** is the flagship imprint (recognition philosophy = distinctive,
+goated). **ANAKHYA runs as a series inside it** (yogi stories), not a rival
+channel — pristine translations under one roof, batch jobs under one roof.
+Split only if a series outgrows the brand. Same rule applies anywhere two
+channels would share an audience: one brand, series inside.
+
 ## Next candidates (volume size + sleepintel channel both exist)
 
 | Channel | Corpus | sleepintel | Style seed |
