@@ -14,7 +14,7 @@ art:
     - "wide landscape composition"
     - "extremely minimal: one subject + vast empty black"
     - "no text, no letters, no numbers, no words (garble risk)"
-  reference: "assets/sleep/wb_scenes/moon-lora1-flux-pencil.jpg"
+  reference: "assets/moon-lora1-flux-pencil.jpg"
 
 pipeline:
   crop: "16:9 center band BEFORE animate (square source goes pano otherwise)"

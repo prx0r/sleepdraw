@@ -1,0 +1,90 @@
+{
+ "art": [
+  {
+   "preset": "lora1",
+   "file": "assets/moon-lora1-flux-pencil.jpg",
+   "bytes": 133693,
+   "purpose": "sleep-channel house style (slow B&W landscape draw)"
+  },
+  {
+   "preset": "lora2",
+   "file": "assets/farm-lora2-flux-pencil.jpg",
+   "bytes": 504786,
+   "purpose": "sleep-channel etched style (dense ink, slow shade)"
+  }
+ ],
+ "clips": [
+  {
+   "key": "powoutputs/test/farm-breathe-loop.mp4",
+   "mb": 3.84,
+   "recipe": null,
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/lantern-v1.mp4",
+   "mb": 1.78,
+   "recipe": "powoutputs/test/lantern-v1.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-15s-arch-flow-test.mp4",
+   "mb": 0.66,
+   "recipe": "powoutputs/test/sleep-draw-15s-arch-flow-test.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-15s-pine-studio-proof.mp4",
+   "mb": 1.78,
+   "recipe": "powoutputs/test/sleep-draw-15s-pine-studio-proof.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-30s-moon-v1.mp4",
+   "mb": 2.22,
+   "recipe": "powoutputs/test/sleep-draw-30s-moon-v1.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-30s-moon-v2.mp4",
+   "mb": 2.42,
+   "recipe": "powoutputs/test/sleep-draw-30s-moon-v2.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-30s-moon-v3.mp4",
+   "mb": 2.26,
+   "recipe": "powoutputs/test/sleep-draw-30s-moon-v3.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-draw-30s-moon-v4-nohand.mp4",
+   "mb": 0.97,
+   "recipe": "powoutputs/test/sleep-draw-30s-moon-v4-nohand.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-etch-2min-farm-slowfill.mp4",
+   "mb": 40.53,
+   "recipe": "powoutputs/test/sleep-etch-2min-farm-slowfill.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-etch-2min-mariner-nohand.mp4",
+   "mb": 51.14,
+   "recipe": "powoutputs/test/sleep-etch-2min-mariner-nohand.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-etch-2min-mariner-slowfill.mp4",
+   "mb": 61.95,
+   "recipe": "powoutputs/test/sleep-etch-2min-mariner-slowfill.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  },
+  {
+   "key": "powoutputs/test/sleep-seq-moon-farm-v1.mp4",
+   "mb": 2.4,
+   "recipe": "powoutputs/test/sleep-seq-moon-farm-v1.json",
+   "reusable_as": "sequence segment (chainable), variant source (inpaint/fal-edit), breathe frame"
+  }
+ ]
+}
