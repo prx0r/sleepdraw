@@ -1,0 +1,44 @@
+# lora1 — FIRST HIT house style for sleep channels (locked 2026-09-27)
+# White pencil line draws itself on black, no hand, 16:9 landscape.
+# Proven by: powoutputs/test/sleep-draw-30s-moon-v4-nohand.mp4
+# Rule: one variable per round — change art OR knobs, never both, v-suffix the key.
+name: lora1
+purpose: sleep-channel house style (slow B&W landscape draw)
+
+art:
+  model: flux
+  model_id: "@cf/black-forest-labs/flux-1-schnell"
+  style: pencil
+  prefix: "Delicate white pencil sketch on pure black background. Fine monochrome linework, moonlit etching style. No text, no letters, no numbers, no words."
+  prompt_rules:
+    - "wide landscape composition"
+    - "extremely minimal: one subject + vast empty black"
+    - "no text, no letters, no numbers, no words (garble risk)"
+  reference: "assets/sleep/wb_scenes/moon-lora1-flux-pencil.jpg"
+
+pipeline:
+  crop: "16:9 center band BEFORE animate (square source goes pano otherwise)"
+  duration_ms: 30000
+  orient: landscape
+
+env:
+  WB_SKIP: 8          # cells/frame: covers ~4x cells from SPLIT=5 at same pace
+  WB_SKETCH_W: 4
+  WB_COLOR_W: 1
+  WB_HOLD_S: 3
+  WB_BG: "#000000"
+  WB_SKETCH_LIGHT: 1  # white strokes; off = dark ink (XMR paper path)
+  WB_SPLIT: 5         # 10 = chunky blocks; 5 = linework
+  WB_SMOOTH: 1        # skeleton strokes; off = grid cells
+  no_hand: true
+
+engine_notes:
+  - "Sketch paints bright pixels only (SKETCH_LIGHT); dark canvases need it."
+  - "Ink reads luminance directly; adaptive threshold inverts on dark art."
+  - "Pen lifts on gaps > ~10px; grain filtered by component size."
+  - "Default cell path untouched — XMR/vertical renders unaffected."
+
+output:
+  size: "1080x600"
+  r2_prefix: "powoutputs/test/"
+  meta: "same-name .json carries full recipe (reproducibility law)"
