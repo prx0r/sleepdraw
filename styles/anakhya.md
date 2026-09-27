@@ -1,7 +1,9 @@
 # ANAKHYA — channel style reference (v1, 2026-09-27)
 
-Sanskrit Trika + Tantra: Abhinavagupta's Kashmir. Vibration becoming form.
-Biggest corpus (169M tantra). Yantra geometry draws itself in white-on-black.
+Yogi stories from Kashmir: siddhas, wandering ascetics, mountain temples,
+miracles told plain. Warm narrative world (NOT diagrams — those belong to
+SVATANTRYA). Abhinavagupta-art-inspired Kashmir: Dal-lake steps, deodar
+forests, snow bridges, diya flotillas, ash-marked travellers.
 
 ## World
 

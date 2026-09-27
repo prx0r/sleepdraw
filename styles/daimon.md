@@ -1,7 +1,8 @@
 # DAIMON — channel style reference (v1, 2026-09-27)
 
 Crowley + Hillman + every culture's double: the one who walks beside you.
-Includes the Crowley lane (Spare/Harris/Thoth), cross-cultural twins, owls.
+Direction: creepier, never cozy — Spare's automatic horror, Crowley's
+Thoth geometry, fog that hides things. Bonfires proven (world-v-daimon).
 
 ## World
 
