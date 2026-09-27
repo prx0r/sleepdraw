@@ -1,0 +1,47 @@
+# lora2 — ETCHED house style for sleep channels (locked 2026-09-27)
+# Dense intaglio scenes that etch, then shade slow. Companion to lora1 (pen).
+# Proven by: powoutputs/test/sleep-etch-2min-farm-slowfill.mp4
+# Difference vs lora1: COLOR_W 1->3 (fill runs the phase), BRUSH 50->10
+# (61px brush floods 5px steps 12x over — finishes early; 10px paces it).
+# Rule: one variable per round — change art OR knobs, never both, v-suffix the key.
+name: lora2
+purpose: sleep-channel etched style (dense ink, slow shade)
+
+art:
+  model: flux
+  model_id: "@cf/black-forest-labs/flux-1-schnell"
+  style: pencil
+  prefix: "Delicate white pencil sketch on pure black background. Fine monochrome linework, moonlit etching style. No text, no letters, no numbers, no words."
+  prompt_rules:
+    - "wide landscape composition"
+    - "dense crosshatching, photoreal pencil detail where it counts"
+    - "monochrome white-grey ink on deep black background"
+    - "no text, no letters, no numbers, no words (garble risk)"
+  reference: "assets/farm-lora2-flux-pencil.jpg"
+
+pipeline:
+  crop: "16:9 center band BEFORE animate (square source goes pano otherwise)"
+  duration_ms: 120000
+  orient: landscape
+
+env:
+  WB_SKIP: 8
+  WB_SKETCH_W: 4
+  WB_COLOR_W: 3       # fill phase ~40% of runtime (was 20%, flooded early)
+  WB_HOLD_S: 3
+  WB_BG: "#000000"
+  WB_SKETCH_LIGHT: 1
+  WB_SPLIT: 5
+  WB_SMOOTH: 1
+  WB_BRUSH: 10        # ~2x cell size; 50 floods 12x over and finishes early
+  no_hand: true
+
+engine_notes:
+  - "Dense ink etches (cross-hatch energy); sparse ink draws (single pen)."
+  - "Brush radius must stay near cell scale or the fill completes early."
+  - "Moon-glow fragments can join oddly early on (star scratch ~30s) — buried by fill."
+
+output:
+  size: "1080x600"
+  r2_prefix: "powoutputs/test/"
+  meta: "same-name .json carries full recipe (reproducibility law)"
