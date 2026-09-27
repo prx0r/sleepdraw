@@ -10,6 +10,9 @@ MODEL_IDS = {
     "sdxl": "@cf/stabilityai/stable-diffusion-xl-base-1.0",
     "lightning": "@cf/bytedance/stable-diffusion-xl-lightning",
     "dreamshaper": "@cf/lykon/dreamshaper-8-lcm",
+    # House pick for islamic line work (mihrab/girih/lamp grammar, free tier).
+    # flux-2-dev + klein need multipart input — unsupported, do not add.
+    "lucid": "@cf/leonardo/lucid-origin",
 }
 
 STYLES = {
