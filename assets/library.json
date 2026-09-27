@@ -111,5 +111,14 @@
     "angels"
    ]
   }
+ ],
+ "refsets": [
+  {
+   "channel": "corbin",
+   "set": "sultan-world",
+   "dir": "assets/refs-corbin/",
+   "count": 6,
+   "rule": "generate in sets of 5 per world; bank winners; each channel gets its own set (abhinavagupta next)"
+  }
  ]
 }
