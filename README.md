@@ -12,6 +12,31 @@ python3 cli.py make --prompt "..." --name pine-v2 --set WB_SKIP=6
 python3 cli.py lora1              # print the locked recipe
 ```
 
+## Repeatable pipeline (any video)
+
+```bash
+python3 cli.py new --name <film> --script essay.txt   # scaffold films/<film>/
+# 1. bible: styles/<channel>.md (write once per channel)
+# 2. flow: films/<film>/flow.md (12 shots, hour one, landscape first)
+# 3. bench: films/<film>/shots-bench.md (hyper-specific concepts)
+python3 cli.py board --script films/<film>/source.txt --name <film>  # chapters
+python3 cli.py shot --board runs/<film>-*/chapters.json --n 3 --prompt "..." --film <film>
+python3 cli.py status --name <film>                   # board progress
+# chain: sleepdraw/sequence.py over finished clips -> R2 -> dash
+```
+
+## Storage map
+
+| Layer | Where | Notes |
+|---|---|---|
+| Channel bible | `styles/<channel>.md` | motifs, palette, music, intro spec |
+| Film dir | `films/<film>/` (flow, bench, source) | committed |
+| Board | `runs/<film>-*/chapters.json` (scratch) | render paths recorded back |
+| Banked art | `assets/` + `assets/library.json` (tagged) | reuse across films |
+| Drafts | R2 `powoutputs/test/` | review surface |
+| Finals | R2 `powoutputs/films/<film>/` (`--film`) | `--film` on make/shot |
+| Long-form | R2 `powoutputs/` root via sequence meta | chained films |
+
 ## Layout
 
 | What | Where |

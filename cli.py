@@ -71,10 +71,52 @@ def cmd_shot(a):
     ch["render"] = mp4
     json.dump(data, open(a.board, "w"), indent=1)
     print("mp4:", mp4)
+    prefix = f"powoutputs/films/{a.film}/" if a.film else "powoutputs/test/"
     if not a.no_ship:
-        print("shipped:", _ship.publish(mp4, f"{data['name']}-ch{a.n:02d}", recipe))
+        print("shipped:", _ship.publish(mp4, f"{data['name']}-ch{a.n:02d}", recipe, prefix))
     else:
         print("(no-ship)")
+
+
+def cmd_new(a):
+    import shutil
+    fdir = os.path.join(HERE, "films", a.name)
+    os.makedirs(fdir, exist_ok=True)
+    if a.script:
+        shutil.copy(a.script, os.path.join(fdir, "source.txt"))
+    flow = os.path.join(fdir, "flow.md")
+    if not os.path.exists(flow):
+        with open(flow, "w") as fh:
+            fh.write(f"# {a.name} — visual flow treatment (v1)\n\n"
+                     "Source: films/%s/source.txt\n" % a.name +
+                     "Law: start with beautiful landscape. One image per 5-min chunk,\n"
+                     "homage to the words or contemplation tool. Mix it up, no formula.\n\n"
+                     "## Shots (hour one)\n\n"
+                     "| # | Min | Image | Why | Style | Status |\n"
+                     "|---|---|---|---|---|---|\n"
+                     "| 1 | 0 | landscape (banked?) | opener: the world | lora2 | todo |\n"
+                     "\nThen: black + bed.\n")
+    print("film dir:", fdir)
+
+
+def cmd_status(a):
+    import glob
+    fdir = os.path.join(HERE, "films", a.name)
+    if not os.path.isdir(fdir):
+        sys.exit(f"no such film: {a.name} (cli.py new --name {a.name})")
+    print(f"== {a.name} ==")
+    for f in sorted(os.listdir(fdir)):
+        print(" ", f)
+    boards = sorted(glob.glob(os.path.join(fdir, "*.json")) +
+                    glob.glob(os.path.join(HERE, "runs", f"{a.name}-*", "chapters.json")))
+    for b in boards:
+        try:
+            data = json.load(open(b))
+        except Exception:
+            continue
+        chs = data.get("chapters", [])
+        done = sum(1 for c in chs if c.get("render"))
+        print(f"  board {os.path.basename(os.path.dirname(b))}: {done}/{len(chs)} rendered")
 
 
 def cmd_make(a):
@@ -106,8 +148,9 @@ def cmd_make(a):
     print("mp4:", mp4)
     for f in frames:
         print("frame:", f)
+    prefix = f"powoutputs/films/{a.film}/" if a.film else "powoutputs/test/"
     if not a.no_ship:
-        key = _ship.publish(mp4, a.name, recipe)
+        key = _ship.publish(mp4, a.name, recipe, prefix)
         print("shipped:", key)
     else:
         print("(no-ship)")
@@ -125,6 +168,7 @@ def main():
     m.add_argument("--dur", type=int, default=30000)
     m.add_argument("--set", action="append", help="WB_SKIP=6 (repeatable)")
     m.add_argument("--hand", action="store_true", help="keep the hand")
+    m.add_argument("--film", default="", help="ship to powoutputs/films/<film>/ (default: test/)")
     m.add_argument("--no-ship", action="store_true")
     b = sub.add_parser("board")
     b.add_argument("--script", required=True)
@@ -142,11 +186,21 @@ def main():
     s.add_argument("--dur", type=int, default=0)
     s.add_argument("--set", action="append", help="WB_SKIP=6 (repeatable)")
     s.add_argument("--hand", action="store_true")
+    s.add_argument("--film", default="", help="ship to powoutputs/films/<film>/ (default: test/)")
     s.add_argument("--no-ship", action="store_true")
+    n = sub.add_parser("new")
+    n.add_argument("--name", required=True)
+    n.add_argument("--script", default="")
+    st = sub.add_parser("status")
+    st.add_argument("--name", required=True)
     sub.add_parser("lora1")
     a = p.parse_args()
     if a.cmd == "lora1":
         print(open(os.path.join(HERE, "lora1.yaml")).read())
+    elif a.cmd == "new":
+        cmd_new(a)
+    elif a.cmd == "status":
+        cmd_status(a)
     elif a.cmd == "board":
         path, chapters = _board.board(a.script, a.name, a.wpm, a.chapter_min)
         print(f"{len(chapters)} chapters -> {path}")
