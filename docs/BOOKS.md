@@ -67,6 +67,20 @@ nothing and justify premium pricing. No stock art, no licenses, house style.
 - Play: illustrated esoteric paperback at **$14.99–19.99** ($6–9/copy),
   ebook $4.99–7.99. Short texts (Shiva Sutras ~100pp) = fastest books.
 
+## Cheapest printing (verified 2026 — KDP wins POD, offset wins bulk)
+
+- **KDP**: free setup, cheapest print ($2.20/100pp, $3.40/200pp B&W).
+  $16.99/200pp → **$6.79/copy** Amazon. Default for everything.
+- **IngramSpark**: same print ±, but 45,000 retailers/libraries.
+  $16.99/200pp @55% discount → $3.40/copy. Bookstore/library reach only
+  (setup now free, no revision fees since Feb 2026).
+- **BookVault**: premium objects (sprayed edges, foil, endpapers) + D2C
+  Shopify native. The beautiful-edition lane.
+- **Lulu**: odd formats only. Skip for trade paperbacks.
+- **Offset**: wins past ~500 copies ($1.50–3/copy) + $200–800 plates +
+  warehouse. Retreat bulk / confirmed pre-orders only.
+- Stack: KDP (volume) + IngramSpark (reach) + BookVault (beautiful) +
+  offset (retreats at 500+). Same PDF feeds KDP + Ingram.
 ## Publishing company checklist (global from your store)
 
 - [ ] Imprint name (your publishing brand — appears on every spine).
