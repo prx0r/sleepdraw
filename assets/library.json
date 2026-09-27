@@ -1,0 +1,49 @@
+{
+ "assets": [
+  {
+   "file": "assets/moon-lora1-flux-pencil.jpg",
+   "tags": [
+    "moon",
+    "water",
+    "minimal"
+   ],
+   "motif": "moon",
+   "anchor": true,
+   "channel": "all",
+   "used_in": [
+    "sleep-draw-30s-moon-v1..v4"
+   ]
+  },
+  {
+   "file": "assets/farm-lora2-flux-pencil.jpg",
+   "tags": [
+    "moon",
+    "farm",
+    "barn",
+    "valley",
+    "night"
+   ],
+   "motif": "valley",
+   "anchor": false,
+   "channel": "all",
+   "used_in": [
+    "sleep-etch-2min-farm-slowfill"
+   ]
+  },
+  {
+   "file": "assets/corbin-garden-lora2-flux-pencil.jpg",
+   "tags": [
+    "moon",
+    "garden",
+    "pool",
+    "lantern",
+    "cypress",
+    "stars"
+   ],
+   "motif": "garden",
+   "anchor": false,
+   "channel": "corbin",
+   "used_in": []
+  }
+ ]
+}

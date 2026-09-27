@@ -135,6 +135,8 @@ def main():
     s.add_argument("--board", required=True)
     s.add_argument("--n", type=int, required=True)
     s.add_argument("--prompt", default="")
+    s.add_argument("--image", default="")
+    s.add_argument("--name", default="")
     s.add_argument("--style", default="lora2", choices=["lora1", "lora2"])
     s.add_argument("--model", default="flux")
     s.add_argument("--dur", type=int, default=0)
