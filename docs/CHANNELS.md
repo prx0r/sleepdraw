@@ -51,6 +51,15 @@ channels would share an audience: one brand, series inside.
   untouched. Survey first; likely holds several channels.
 - acquisitions 383M (intake pile).
 
+## Future wave (banked, not built)
+
+- **CONSCIOUSNESS THEORIES** — our own theories via /frontier. Originals,
+  not traditions. Needs its own visual grammar (neural + void?).
+- **SYNTHETICS / INTELLIGENT OTHERS** — synthetic life, AGI scenarios
+  (sleepintel has agi_scenarios lineage). Machine-dream aesthetics.
+- Rule: nothing new until the locked seven ship. Ideas are cheap, premieres
+  are the currency.
+
 ## Rules (unchanged)
 
 - Academic vs storied splits (SVATANTRYA/ANAKHYA pattern) before adding.
