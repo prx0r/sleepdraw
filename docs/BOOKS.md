@@ -37,6 +37,15 @@ nothing and justify premium pricing. No stock art, no licenses, house style.
 - Every plate credited: "etched by sleepdraw from [source]".
 - One book = one film = one channel lock. No orphans.
 
+## Book pricing (KDP verified 2026, Amazon.com)
+
+- Formula: print = $1.00 + $0.012/page (B&W, 110–828pp). Royalty 60%.
+- 100pp: print $2.20 → $9.99 list = **$3.79/copy**; $14.99 = $6.79; $17.99 = $8.59.
+- 200pp: print $3.40 → $14.99 = $5.59; $19.99 = $8.59.
+- Ebooks: 70% on $2.99–9.99 → $2.09–6.99/copy, zero print cost.
+- Play: illustrated esoteric paperback at **$14.99–19.99** ($6–9/copy),
+  ebook $4.99–7.99. Short texts (Shiva Sutras ~100pp) = fastest books.
+
 ## Prints (POD wall art — same plates, second revenue)
 
 - **Gelato** (not Printful): 140 partners, 32 countries, prints INSIDE the
