@@ -1,0 +1,65 @@
+# lora2-corbin — IMAGINAL house style (drafted 2026-09-27)
+# Corbin channel look: Persian-miniature SPACE + visionary CONTENT, drawn in
+# our white-pencil-on-black medium with one gold accent.
+#
+# Grammar (from the research, not vibes):
+# - NO linear perspective: heterogeneous qualitative space — grades of reality
+#   stacked vertically (earth garden below, hanging forms mid, stars above).
+#   Persian miniature depicts the imaginal world, not the physical one.
+# - Hanging/suspended forms (suwar al-mu'allaqa): objects float, ungravitied.
+# - Paradisial garden elements: cypress, nightingale-rose, walled garden pool.
+# - Emerald horizon band (visio smaragdina) + black luminous night (black light).
+# - Gold accent ONLY (#D4A94E, SLEEP coin accent): sun-disc rims, dome finials,
+#   mirror frames. Everything else white-grey pencil.
+# - Tadhhib-like border calm: generous black margins, centered subject.
+# - Mi'raj layering: layered skies, halos as concentric rings, frames in frames.
+#
+# Progression law: every film opens on a RICH landscape in this style
+# (the Hurqalya establishing shot), then descends to emblems.
+# Proven-by: pending first landscape (moon-garden-night).
+name: lora2-corbin
+purpose: corbin-channel imaginal style (miniature space, pencil medium, gold accent)
+
+art:
+  model: flux
+  model_id: "@cf/black-forest-labs/flux-1-schnell"
+  style: pencil
+  prefix: "White pencil etching on deep black background, no linear perspective, stacked planes of reality, paradisial night garden. No text, no letters, no numbers, no words."
+  prompt_rules:
+    - "wide landscape composition, generous black margins"
+    - "suspended floating forms, cypress silhouettes, still pool"
+    - "one gold accent object only (#D4A94E): sun disc, dome, or mirror"
+    - "emerald horizon band optional, thin"
+    - "no faces unless the chapter demands; veils over faces"
+  reference: "assets/corbin-garden-lora2-flux-pencil.jpg"
+
+pipeline:
+  crop: "16:9 center band BEFORE animate"
+  duration_ms: 120000
+  orient: landscape
+
+env:
+  WB_SKIP: 8
+  WB_SKETCH_W: 4
+  WB_COLOR_W: 3
+  WB_HOLD_S: 3
+  WB_BG: "#000000"
+  WB_SKETCH_LIGHT: 1
+  WB_SPLIT: 5
+  WB_SMOOTH: 1
+  WB_BRUSH: 10
+  no_hand: true
+
+lora_training:
+  endpoint: "fal-ai/flux-lora-fast-training"
+  trigger: "kqrb etching"
+  is_style: true
+  steps: 1000
+  cost: "$2/run"
+  needs: "10+ consistent frames as ZIP (this preset generates them)"
+  inference: "fal-ai/flux-lora, loras:[{path, scale:0.9}], prompt starts with trigger"
+
+output:
+  size: "1080x600"
+  r2_prefix: "powoutputs/test/"
+  meta: "same-name .json carries full recipe"
