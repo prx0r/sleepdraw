@@ -37,6 +37,27 @@ nothing and justify premium pricing. No stock art, no licenses, house style.
 - Every plate credited: "etched by sleepdraw from [source]".
 - One book = one film = one channel lock. No orphans.
 
+## Rights law (read twice)
+
+- Translating a COPYRIGHTED work needs the rights holder's permission.
+  **Corbin (d.1978) is NOT public domain** (France life+70 → ~2049) — you
+  cannot translate his French and sell it. Period.
+- What you CAN own: fresh translations FROM public-domain sources. Ibn
+  Arabi (d.1240) Arabic, Rumi Persian originals, Attar, Suhrawardi Arabic —
+  all PD. Translate from the source language (Pāṭala's whole job), and the
+  English is yours outright, forever.
+- Rule of thumb: translate DEAD mystics (700+ years), never their
+  20th-century interpreters, without a license.
+
+## Hardcover (beautiful editions)
+
+- Gelato does NOT do books (prints/wall art only). Hardcover = KDP or
+  IngramSpark. KDP B&W hardcover ≈ $6.80 + $0.012/pg (~$8.00 @100pp);
+  at $24.99 ≈ ~$7/copy. KDP quality is basic — IngramSpark (setup effort,
+  better binding/paper) for the true premium object.
+- Play: paperback $14.99 (volume) + hardcover $29.99 (shelf object) +
+  poster of one plate ($24.99). Same content, three price points.
+
 ## Book pricing (KDP verified 2026, Amazon.com)
 
 - Formula: print = $1.00 + $0.012/page (B&W, 110–828pp). Royalty 60%.
