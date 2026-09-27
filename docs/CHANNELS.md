@@ -13,6 +13,13 @@ intro (8s), bed. Craft one-by-one when we come to it.
 | 4 | ANAKHYA | Yogi stories | tantra 169M | warm narrative Kashmir |
 | 5 | THEURGY | Late-antique rite | sleepintel ch. | braziers, waking statues |
 | 6 | CHANNELED | Dictated cosmos | verify Ra sources | séance circles |
+| 7 | FOLK & FABLE | Grimm, slowed | Bremen film proven (8:58) | storybook etching |
+
+## Every channel is a publisher (2026-09-27 unlock)
+
+Each channel = imprint: house style + film studio + books + prints.
+Same machine (bible → flow → draw → voice → chain → ship), different world.
+Proven by Bremen: drawn + animated Grimm, read slowly, on the dash.
 
 ## Next candidates (volume size + sleepintel channel both exist)
 
