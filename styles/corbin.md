@@ -54,6 +54,35 @@ fade. Then film. Reusable asset, rendered once: `assets/corbin-intro.mp4` (TODO)
   continuing narration → slow fade (3–4s) → 2.5s black breath → next.
 - Draw emerges from black; no fade-ins ever.
 
+## Book anchor (Alone with the Alone — real TOC)
+
+- Intro: spiritual topography · Ibn Arabi life-curve (Averroes funeral,
+  pilgrim to Orient, disciple of Khidr, maturity) · esoterism
+- Part One/SYMPATHY: I divine passion (heliotrope, pathetic god, unio
+  sympathetica) · II sophiology (sophianic poem, dialectic of love, feminine)
+- Part Two/PRAYER: III creation as theophany · IV heart (field, subtile
+  organ, science) · V prayer (method, homologations, responses) ·
+  VI form of god (hadith of vision, mystic Kaaba) · Epilogue
+- Our 7 essays map 1:1 onto this spine. Films follow the book's order.
+
+## Reference works (real, citable, look at these)
+
+- Mi'raj paintings (Buraq ascent, layered heavens, vessel-angels, flaming
+  aureoles; Safavid veiled faces — our no-faces rule is period-correct).
+- Tazhib illumination: shamsa sunbursts, girih strapwork, islimi vines,
+  gold-on-lapis borders and chapter marks.
+- Rumi Masnavi opening pages (Dartmouth): gold arabesque fields.
+- Timurid Herat / Bihzad school: Majnun on Layla's tomb (extra-textual
+  mystical figures inside narrative scenes — our emblem-in-landscape move).
+- Sheikh Lotfollah dome + Nasir al-Mulk hall: architecture as luminous body.
+- Mamluk glass lamps with the Light Verse: hanging light motif source.
+
+## Sleeper figure (stolen from the miniatures)
+
+Persian painters put small "spectator figures" at the horizon to model the
+viewer's gaze. Ours: ONE tiny resting/sleeping figure at the horizon of
+landscapes — the viewer's surrogate, already asleep. Recurs across films.
+
 ## Library tags (assets/library.json)
 
 Tag every banked asset: motif (moon/garden/lamp/dome/mihrab/girih/figure/
