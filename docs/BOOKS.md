@@ -36,3 +36,14 @@ nothing and justify premium pricing. No stock art, no licenses, house style.
   translation only.
 - Every plate credited: "etched by sleepdraw from [source]".
 - One book = one film = one channel lock. No orphans.
+
+## Prints (POD wall art — same plates, second revenue)
+
+- **Gelato** (not Printful): 140 partners, 32 countries, prints INSIDE the
+  buyer's country. A3 poster EU→EU ≈ $9.50 landed vs $15.48 Printful.
+  At $24.99 retail: ~$15 margin (+63% vs Printful). No inventory, no customs.
+- Our B&W etchings are ideal poster stock: high contrast, zero color
+  management pain, cheap to print. Export 300dpi from banked art.
+- Storefront: Etsy/Shopify (both integrate) — traffic is ours (films +
+  books funnel it). Gelato fulfills, we keep the brand.
+- Start: 5 best plates (moon, farm, garden, mariner, mihrab) as A3 posters.
