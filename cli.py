@@ -18,6 +18,7 @@ sys.path.insert(0, HERE)
 
 import yaml  # noqa: E402
 from sleepdraw import art as _art, draw as _draw, ship as _ship  # noqa: E402
+from sleepdraw import storyboard as _board  # noqa: E402
 
 
 def _cf():
@@ -32,6 +33,48 @@ def _cf():
 def _lora1():
     with open(os.path.join(HERE, "lora1.yaml")) as f:
         return yaml.safe_load(f)
+
+
+def cmd_shot(a):
+    data = json.load(open(a.board))
+    ch = next(c for c in data["chapters"] if c["n"] == a.n)
+    lora = _lora1() if a.style == "lora1" else None
+    if a.style == "lora2":
+        with open(os.path.join(HERE, "lora2.yaml")) as f:
+            lora = yaml.safe_load(f)
+    knobs = dict(lora["env"])
+    for s in a.set or []:
+        k, v = s.split("=", 1)
+        knobs[k.strip()] = v.strip()
+    prompt = a.prompt or ch["prompt"]
+    if not prompt:
+        sys.exit(f"chapter {a.n} has no prompt — pass --prompt or fill chapters.json "
+                 f"(seed: {', '.join(ch['seed'])})")
+    tok, acc = _cf()
+    img = _art.generate(prompt, tok, acc, model=a.model, style=lora["art"]["style"])
+    stamp = time.strftime("%H%M%S")
+    slug = f"ch{a.n:02d}-{a.name or data['name']}-{stamp}"
+    rundir = os.path.join(HERE, "runs", slug)
+    os.makedirs(rundir, exist_ok=True)
+    art_path = os.path.join(rundir, "art.jpg")
+    open(art_path, "wb").write(img)
+    crop = os.path.join(rundir, "art_16x9.jpg")
+    _draw.crop_169(art_path, crop)
+    mp4, frames, log = _draw.render(crop, os.path.join(rundir, "anim"),
+                                    knobs, duration_ms=a.dur or lora["pipeline"]["duration_ms"],
+                                    no_hand=not a.hand)
+    recipe = {"preset": a.style, "chapter": ch["n"], "start_min": ch["start_min"],
+              "chapter_text": ch["text"][:300], "prompt": prompt,
+              "style": lora["art"]["style"], "model": a.model, "env": knobs,
+              "no_hand": not a.hand, "duration_ms": a.dur}
+    json.dump(recipe, open(os.path.join(rundir, "recipe.json"), "w"), indent=1)
+    ch["render"] = mp4
+    json.dump(data, open(a.board, "w"), indent=1)
+    print("mp4:", mp4)
+    if not a.no_ship:
+        print("shipped:", _ship.publish(mp4, f"{data['name']}-ch{a.n:02d}", recipe))
+    else:
+        print("(no-ship)")
 
 
 def cmd_make(a):
@@ -83,10 +126,32 @@ def main():
     m.add_argument("--set", action="append", help="WB_SKIP=6 (repeatable)")
     m.add_argument("--hand", action="store_true", help="keep the hand")
     m.add_argument("--no-ship", action="store_true")
+    b = sub.add_parser("board")
+    b.add_argument("--script", required=True)
+    b.add_argument("--name", required=True)
+    b.add_argument("--wpm", type=int, default=110)
+    b.add_argument("--chapter-min", type=int, default=5)
+    s = sub.add_parser("shot")
+    s.add_argument("--board", required=True)
+    s.add_argument("--n", type=int, required=True)
+    s.add_argument("--prompt", default="")
+    s.add_argument("--style", default="lora2", choices=["lora1", "lora2"])
+    s.add_argument("--model", default="flux")
+    s.add_argument("--dur", type=int, default=0)
+    s.add_argument("--set", action="append", help="WB_SKIP=6 (repeatable)")
+    s.add_argument("--hand", action="store_true")
+    s.add_argument("--no-ship", action="store_true")
     sub.add_parser("lora1")
     a = p.parse_args()
     if a.cmd == "lora1":
         print(open(os.path.join(HERE, "lora1.yaml")).read())
+    elif a.cmd == "board":
+        path, chapters = _board.board(a.script, a.name, a.wpm, a.chapter_min)
+        print(f"{len(chapters)} chapters -> {path}")
+        for c in chapters:
+            print(f"  ch{c['n']:02d} @{c['start_min']}min ({c['words']}w) seed: {', '.join(c['seed'])}")
+    elif a.cmd == "shot":
+        cmd_shot(a)
     else:
         if not a.prompt and not a.image:
             sys.exit("need --prompt or --image")
