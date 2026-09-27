@@ -46,6 +46,18 @@ nothing and justify premium pricing. No stock art, no licenses, house style.
 - Play: illustrated esoteric paperback at **$14.99–19.99** ($6–9/copy),
   ebook $4.99–7.99. Short texts (Shiva Sutras ~100pp) = fastest books.
 
+## Publishing company checklist (global from your store)
+
+- [ ] Imprint name (your publishing brand — appears on every spine).
+- [ ] ISBNs: free KDP ISBN per book, or buy your own block (own ISBN =
+  your imprint in book databases; ~$125 single / $295 ten, Bowker US).
+- [ ] KDP account → paperback + ebook, all Amazon marketplaces (global
+  distribution built in, zero inventory).
+- [ ] Gelato account → posters/prints, 32-country local production.
+- [ ] Storefront: Etsy (built-in esoteric audience) and/or Shopify.
+  Gelato plugs into both; films + books funnel the traffic free.
+- [ ] One LLC/trading name when revenue justifies it (not day one).
+
 ## Prints (POD wall art — same plates, second revenue)
 
 - **Gelato** (not Printful): 140 partners, 32 countries, prints INSIDE the
