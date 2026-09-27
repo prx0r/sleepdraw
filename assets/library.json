@@ -44,6 +44,56 @@
    "anchor": false,
    "channel": "corbin",
    "used_in": []
+  },
+  {
+   "file": "assets/ref-mihrab1354-etch.jpg",
+   "tags": [
+    "mihrab",
+    "girih",
+    "arch",
+    "reference"
+   ],
+   "motif": "mihrab",
+   "anchor": false,
+   "channel": "corbin",
+   "used_in": [],
+   "source": "Met 449537, 1354 CE, public domain"
+  }
+ ],
+ "refs": [
+  {
+   "id": "Met 449537",
+   "what": "Mihrab, 1354 CE",
+   "tags": [
+    "mihrab",
+    "girih"
+   ]
+  },
+  {
+   "id": "Met 452193",
+   "what": "Senneh prayer rug, 18-19th c.",
+   "tags": [
+    "rug",
+    "mihrab",
+    "pattern"
+   ]
+  },
+  {
+   "id": "Met 447572",
+   "what": "Bellini carpet, 16-17th c.",
+   "tags": [
+    "rug",
+    "pattern"
+   ]
+  },
+  {
+   "id": "Met 452670",
+   "what": "Miraj folio, 1525",
+   "tags": [
+    "miraj",
+    "veil",
+    "angels"
+   ]
   }
  ]
 }
