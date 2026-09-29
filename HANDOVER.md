@@ -76,3 +76,35 @@ new art OR new knobs per round, never both. Owner reviews on dash + R2 links.
 3. FAL_KEY → breathe.py + stillness matrix; then morph cheats.
 4. Corbin intro/logo asset (gold girih star, 8s).
 5. Push cadence: commit per feature, push when owner says.
+
+## Session 2026-09-28 — lora3 fineliner + Yuki master-arc (all night, $0)
+
+Owner verdicts drove everything: width variants identical (wrong variable) →
+rhythm L2 deep wins → wave-smoothing fixes jitter → 1px pencil point →
+staged acts + engine gold ritual → master-arc wedge → checkpoint ladder →
+color target. lora3 LOCKED (see lora3.yaml).
+
+Engine patches (vendor/techdou/scripts/generate_whiteboard.py):
+- WB_RHYTHM 1/2: curvature pacing + lift pauses, wave-smoothed costs, same frames.
+- WB_LINE: pen point px override (1 = pencil). WB_AA 2 = supersample sub-pixel.
+  WB_INK <255 = faint-line feel. "0"/"" both parse as off (fixed 9/28).
+- WB_ACTS N + WB_ACT_PAUSE_S: y-band staged reveal, breaths between acts.
+- WB_GOLD waypoints: reserved from ink+fill, progressive ritual in hold phase
+  (fill can never erase it). Flux must NOT paint gold.
+- Bug caught by pixel audit: stray line doubled hold frames in gold runs
+  (fixed). KNOB_KEYS extended in sleepdraw/draw.py. cli.py make: --preset flag
+  (recipe honesty).
+- art.py: new "photo" style (color masters via CF flux, free).
+
+Art direction (styles/yuki.md): fineliner brief locked; 16:9 crop keeps y 22-78%;
+moons land top-edge (compose without them); signatures/glyphs (regen hardened);
+flux will not paint gold (engine owns it).
+
+Shipped (R2 powoutputs/test/, dash review queue): yuki-doorway-hero (2min),
+yuki-full-v1 (5-plate chain), wave/pencil/thinAA/faint/ritual variants,
+yuki-ladder.jpg (5-stage checkpoint contact sheet), master-v4 + color-v1.
+Yuki-Onna text measured: 7,968 chars, 11-12 min, $0.08 Eleven v4 (/tmp files).
+
+Open threads: FAL_KEY missing (Uni-1 masters, img2img stages, Inworld shootout).
+Morph/overdraw/boil/hatchfill/inkwash/pen-scratch/checkpoint-scheduler/longform
+→ docs/ROADMAP.md. Yuki film assembly → films/yuki/.

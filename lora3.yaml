@@ -1,0 +1,59 @@
+# lora3 — FINELINER house style (LOCKED 2026-09-28)
+# Yuki-Onna proved it. Not "lora2 draws Japanese things" — the differentiation
+# is real and threefold: uniform thin fixed-nib lines (no pressure variation,
+# the opposite of pencil) + hatched shade that follows forms + engine-drawn
+# gold ritual in the hold phase (flux gold lottery bypassed).
+# Proven-by: powoutputs/test/yuki-full-v1.mp4 (5-plate chain) and the
+# master-arc prototypes (yuki-doorway-wave-hero, yuki-v-ritual2).
+name: lora3
+purpose: fineliner sleep-channel style (fixed nib, hatched shade, gold ritual)
+based_on: lora2
+
+art:
+  model: flux
+  model_id: "@cf/black-forest-labs/flux-1-schnell"
+  style: pencil
+  prefix: "White fineliner ink etching on deep black background: uniform thin lines, dense intricate crosshatching, extremely detailed, crisp edges, no blended gradients. No linear perspective, stacked planes. Full-bleed edge-to-edge PURE BLACK background to all four edges, absolutely no white wash, no vignette, no paper border, no frame, no signature, no watermark. No text, no letters, no numbers, no words."
+  prompt_rules:
+    - "wide landscape composition, generous black margins, key elements vertical-center (16:9 crop keeps y 22-78%)"
+    - "uniform thin linework, dense crosshatching, visible sketch construction lines"
+    - "veiled faceless woman in white when a figure appears (never a face)"
+    - "one gold accent only (#D4A94E) — engine-drawn (WB_GOLD), never prompted"
+    - "moons compose low-center or not at all (top-edge moons crop out)"
+    - "vast black always wins; sparse, never cluttered"
+  reference: "runs/yuki-exp/doorway-v3.jpg (keeper) + color-v1.jpg (color target)"
+
+pipeline:
+  crop: "16:9 center band BEFORE animate"
+  duration_ms: 120000
+  orient: landscape
+
+env:
+  WB_SKIP: 8
+  WB_SKETCH_W: 3
+  WB_COLOR_W: 3
+  WB_HOLD_S: 3
+  WB_BG: "#000000"
+  WB_SKETCH_LIGHT: 1
+  WB_SPLIT: 5
+  WB_SMOOTH: 1
+  WB_BRUSH: 10
+  WB_RHYTHM: 2        # deep: curve slowdown + lift pauses, wave-smoothed
+  WB_LINE: 1          # 1px fixed nib (fineliner, not pencil pressure)
+  WB_AA: 0            # off at lock (thinAA test: smoother, optional)
+  WB_INK: 0           # off at lock (faint test: ghost-line option)
+  WB_ACTS: 0          # per-film (3 for master-arc + WB_GOLD waypoints)
+  WB_GOLD: ""         # per-film waypoints, 0-1 fractions (hold ritual)
+  WB_ACT_PAUSE_S: 4.0
+  no_hand: true
+
+engine_notes:
+  - "WB_RHYTHM redistributes frames, never extends them; wave-smoothing kills jitter."
+  - "WB_AA=2 = true sub-pixel (slower CPU); WB_INK<255 = faint-line feel."
+  - "Gold ritual lives in hold phase (fill can never erase it); flux must NOT paint gold."
+  - "Flux failure modes: top moons (crop kills), signatures (crop usually kills), white wash (regen hardened), visible faces (regen)."
+
+output:
+  size: "1080x600"
+  r2_prefix: "powoutputs/test/"
+  meta: "same-name .json carries full recipe (reproducibility law)"

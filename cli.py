@@ -141,7 +141,7 @@ def cmd_make(a):
     _draw.crop_169(art_path, crop)
     mp4, frames, log = _draw.render(crop, os.path.join(rundir, "anim"),
                                     knobs, duration_ms=a.dur, no_hand=no_hand)
-    recipe = {"preset": "lora1", "prompt": a.prompt, "image": a.image,
+    recipe = {"preset": a.preset, "prompt": a.prompt, "image": a.image,
               "style": a.style, "model": a.model, "env": knobs,
               "no_hand": no_hand, "duration_ms": a.dur}
     json.dump(recipe, open(os.path.join(rundir, "recipe.json"), "w"), indent=1)
@@ -169,6 +169,7 @@ def main():
     m.add_argument("--set", action="append", help="WB_SKIP=6 (repeatable)")
     m.add_argument("--hand", action="store_true", help="keep the hand")
     m.add_argument("--film", default="", help="ship to powoutputs/films/<film>/ (default: test/)")
+    m.add_argument("--preset", default="lora1", help="recipe label (knobs come from --set)")
     m.add_argument("--no-ship", action="store_true")
     b = sub.add_parser("board")
     b.add_argument("--script", required=True)

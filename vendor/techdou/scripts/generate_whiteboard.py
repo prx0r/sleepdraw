@@ -1204,6 +1204,84 @@ def _ordered_stroke_points(skel, draw_order, split_len):
     return np.array(pts, dtype=np.int32)
 
 
+def _rhythm_targets(pts, lift, frames, level, holds=None):
+    """Human phrasing for the pen reveal (WB_RHYTHM=1 moderate, 2 deep):
+    slow where the path turns (detail gets time, straights fly) and pause
+    at pen lifts (the hand travels between regions). Costs redistribute the
+    SAME frame count — duration never changes. Deterministic: same art +
+    same level = same reveal, recipe-safe."""
+    n = len(pts)
+    if level >= 2:
+        curve_w, pause_s = 6.0, 0.5
+    else:
+        curve_w, pause_s = 3.0, 0.2
+    step = np.abs(np.diff(pts, axis=0)).sum(axis=1)
+    jump = np.zeros(n, dtype=bool)
+    jump[1:] = step > lift
+    v = np.diff(pts, axis=0).astype(float)
+    vn = v / (np.linalg.norm(v, axis=1, keepdims=True) + 1e-9)
+    cosang = (vn[:-1] * vn[1:]).sum(axis=1)
+    ang = np.arccos(np.clip(cosang, -1, 1)) / np.pi  # 0 straight .. 1 reversal
+    curve = np.zeros(n)
+    curve[1:-1] = ang
+    curve[jump] = 0.0  # jumps aren't detail — they get pauses, not slowdown
+    cost = 1.0 + curve_w * curve
+    rate = n / max(frames, 1)            # points per frame, approx
+    cost[jump] += pause_s * 60 * rate    # lift pause in frames → point-cost
+    # Momentum smoothing: blur the cost profile so velocity changes arrive
+    # as waves, not steps (the jitter fix). Window ~0.2s (L1) / 0.35s (L2)
+    # of frames, in point units. Total renormalized below — duration fixed.
+    win_frames = 20.0 if level >= 2 else 12.0
+    sigma = max(win_frames * rate / 2.0, 1.0)
+    k = min(n - (1 - n % 2), int(6 * sigma) | 1)
+    if k > 1:
+        row = cost.astype(np.float32).reshape(1, -1)
+        cost = cv2.GaussianBlur(row, (k, 1), float(sigma)).ravel().astype(float)
+        cost = np.maximum(cost, 1e-6)
+    if holds:  # inter-act breaths: added AFTER smoothing so they hold shape
+        rate2 = n / max(frames, 1)
+        for idx, pause_frames in holds.items():
+            if 0 <= idx < n:
+                cost[idx] += pause_frames * rate2
+    cum = np.cumsum(cost)
+    total = cum[-1]
+    marks = (np.arange(1, frames + 1) / frames * total)
+    targets = np.searchsorted(cum, marks, side="left") + 1
+    return np.clip(targets, 1, n)
+
+
+def _act_reorder(pts, acts):
+    """Group walked points into N acts by y-band (top→bottom = establishing→
+    subjects for our plates), preserving walk order within each act. Returns
+    (reordered_pts, boundary_indices) — boundaries are pen lifts, i.e. the
+    contemplative breaths between acts."""
+    ys = pts[:, 1]
+    edges = np.linspace(ys.min(), ys.max() + 1, acts + 1)
+    act = np.clip(np.searchsorted(edges, ys, side="right") - 1, 0, acts - 1)
+    order = np.argsort(act, kind="stable")
+    re_act = act[order]
+    bounds = [i for i in range(1, len(order)) if re_act[i] != re_act[i - 1]]
+    return pts[order], bounds
+
+
+def _gold_path(spec, w, h):
+    """WB_GOLD 'x1,y1 x2,y2 ...' in 0-1 frame fractions → dense pixel path."""
+    way = []
+    for tok in spec.split():
+        x, y = tok.split(",")
+        way.append((float(x) * w, float(y) * h))
+    if len(way) < 2:
+        return np.zeros((0, 2))
+    dense = [way[0]]
+    for a, b in zip(way, way[1:]):
+        dist = max(abs(b[0] - a[0]), abs(b[1] - a[1]))
+        steps = max(int(dist / 2), 1)
+        for s in range(1, steps + 1):
+            t = s / steps
+            dense.append((a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t))
+    return np.array(dense)
+
+
 def smooth_sketch(variables, sketch_frames):
     """Progressive pen-stroke reveal (WB_SMOOTH=1): skeleton-ordered
     anti-aliased polyline through a reveal mask — no grid cells, no popping.
@@ -1218,6 +1296,20 @@ def smooth_sketch(variables, sketch_frames):
     ink = gray > 100 if light else gray < 128
     if not ink.any():
         return False
+    gold_spec = (os.environ.get("WB_GOLD", "") or "").strip()
+    variables["gold_path"] = None
+    if gold_spec:  # engine-drawn gold: reserved from ink AND fill, revealed
+        gh, gw = gray.shape[:2]    # in the hold-phase ritual (see hold loop)
+        gp = _gold_path(gold_spec, gw, gh)
+        if len(gp):
+            gm = np.zeros(gray.shape, dtype=np.uint8)
+            for a, b in zip(gp[:-1].astype(int), gp[1:].astype(int)):
+                cv2.line(gm, tuple(a), tuple(b), 255, 5, cv2.LINE_AA)
+            ink[gm > 0] = False    # the wisp stays black until its ritual
+            variables["gold_path"] = gp
+            variables["gold_mask"] = gm > 0
+            print(f"  gold reserved: {len(gp)} path points "
+                  f"(revealed in hold ritual)")
     skel = _zhang_suen(ink)
     if skel.sum() < 10:
         return False
@@ -1236,24 +1328,65 @@ def smooth_sketch(variables, sketch_frames):
     pts = _walk_skeleton(skel)
     if len(pts) < 10:
         return False
+    acts = int(os.environ.get("WB_ACTS", "") or 0)
+    holds = None
+    if acts > 1:  # staged reveal: one image excavated act by act, breaths between
+        pause_s = float(os.environ.get("WB_ACT_PAUSE_S", "") or 4.0)
+        pts, bounds = _act_reorder(pts, acts)
+        holds = {b: pause_s * 60 for b in bounds}
+        print(f"  staged reveal: {acts} acts, {len(bounds)} breaths "
+              f"({pause_s}s), top-to-bottom")
     n = len(pts)
     print(f"  smooth stroke: {n} skeleton points over {sketch_frames} frames")
     src = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
     bg = create_background_canvas(variables["img"].shape)
     mask = np.zeros(gray.shape, dtype=np.uint8)
-    thick = max(2, variables["split_len"] // 2)
+    thick = int(os.environ.get("WB_LINE", "") or max(2, variables["split_len"] // 2))
+    if thick >= 1:
+        print(f"  pen point: {thick}px (WB_LINE override)" if "WB_LINE" in os.environ else f"  pen point: {thick}px")
+    aa_raw, ink_raw = os.environ.get("WB_AA", ""), os.environ.get("WB_INK", "")
+    aa = max(int(aa_raw) if aa_raw and int(aa_raw) > 0 else 1, 1)
+    ink_v = min(int(ink_raw) if ink_raw and int(ink_raw) > 0 else 255, 255)
+    ink_v = max(ink_v, 1)
+    himask = None
+    if aa > 1:  # draw big, composite small → true sub-pixel lines (0.5px…)
+        himask = np.zeros((gray.shape[0] * aa, gray.shape[1] * aa),
+                          dtype=np.uint8)
+        print(f"  supersample x{aa} (sub-pixel point), ink {ink_v}/255")
+    elif ink_v < 255:
+        print(f"  ink {ink_v}/255 (faint-line feel)")
     lift = max(8, variables["split_len"] * 2)  # pen lifts beyond this gap
     drawn = 0
     tip = tuple(pts[0])
+    rhythm = int(os.environ.get("WB_RHYTHM", "0") or 0)
+    # B&W reveals across the whole sketch window now; gold lives in the
+    # hold-phase ritual (see hold loop) so fill can never erase it.
+    if acts > 1 or holds or rhythm > 0:
+        targets = _rhythm_targets(pts, lift, sketch_frames, max(rhythm, 1),
+                                  holds=holds)
+        print(f"  staged targets (rhythm L{max(rhythm, 1)}"
+              f"{', acts' if acts > 1 else ''})")
+    else:
+        targets = None
+    GOLD = (78, 169, 212)  # #D4A94E in BGR — the one accent, drawn by hand
     for f in range(sketch_frames):
-        target = int((f + 1) / sketch_frames * n)
+        target = int(targets[f]) if targets is not None else int(
+            (f + 1) / sketch_frames * n)
         while drawn < target:
             nxt = tuple(pts[min(drawn + 1, n - 1)])
             if abs(nxt[0] - tip[0]) + abs(nxt[1] - tip[1]) <= lift:
-                cv2.line(mask, tip, nxt, 255, thick, cv2.LINE_AA)
+                if himask is not None:
+                    a = (tip[0] * aa, tip[1] * aa)
+                    b = (nxt[0] * aa, nxt[1] * aa)
+                    cv2.line(himask, a, b, 255, thick * aa, cv2.LINE_AA)
+                else:
+                    cv2.line(mask, tip, nxt, 255, thick, cv2.LINE_AA)
             tip = nxt  # pen-up move: no connecting stroke
             drawn += 1
-        m = (mask.astype(np.float32) / 255.0)[:, :, None]
+        use = (cv2.resize(himask, (mask.shape[1], mask.shape[0]),
+                          interpolation=cv2.INTER_AREA)
+               if himask is not None else mask)
+        m = (use.astype(np.float32) / 255.0 * (ink_v / 255.0))[:, :, None]
         frame = (src.astype(np.float32) * m + bg.astype(np.float32) * (1 - m)
                  ).astype(np.uint8)
         if variables["draw_hand"]:
@@ -1349,6 +1482,10 @@ def draw_masked_object(variables, target_cells, skip_rate=SKIP_RATE):
             print(f"  进度: {pct}% ({counter}/{actual_cells})")
 
     print(f"  绘制完成，共 {counter} 步, 写入 {frames_written} 帧")
+    gm = variables.get("gold_mask")
+    if gm is not None:  # fill must never touch the reserved gold region
+        variables["drawn_frame"][gm] = 0.0
+        print("  gold region re-blackened after fill")
 
 
 def _build_brush_mask(radius):
@@ -1648,10 +1785,30 @@ def main():
         brush_radius=COLOR_BRUSH_RADIUS,
     )
 
-    # 结尾展示完整彩色原图
+    # 结尾展示完整彩色原图 — with the gold ritual first (if reserved):
+    # B&W complete → the hand draws the gold wisp over ~4s → stillness.
     end_img = variables["img"]
-    for _ in range(hold_frames):
-        variables["video_object"].write(end_img)
+    gp = variables.get("gold_path")
+    ritual = 0
+    if gp is not None and len(gp):
+        ritual = min(int(4 * FRAME_RATE), hold_frames)
+        base = end_img.copy()
+        gh, gw = base.shape[:2]
+        gm = variables.get("gold_mask")
+        if gm is not None:
+            base[gm] = 0  # keep the wisp's bed black until its moment
+        print(f"  gold ritual: {ritual} hold-frames, then stillness")
+    for i in range(hold_frames):
+        if ritual and i < ritual:
+            k = int(len(gp) * (i + 1) / ritual)
+            shot = base.copy()
+            seg = gp[:max(k, 2)].astype(int)
+            for a, b in zip(seg[:-1], seg[1:]):
+                cv2.line(shot, tuple(a), tuple(b), (78, 169, 212),
+                         1, cv2.LINE_AA)
+            variables["video_object"].write(shot)
+        else:
+            variables["video_object"].write(end_img)
 
     variables["video_object"].release()
 

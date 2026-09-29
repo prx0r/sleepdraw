@@ -25,6 +25,9 @@ STYLES = {
     "chalk": ("Hand-drawn glowing marker sketch on dark charcoal blackboard "
               "background. Chalk style, minimalist doodle. No text, no letters, "
               "no numbers, no words."),
+    "photo": ("Cinematic photorealistic scene, ultra detailed, film still "
+              "quality, rich blacks. No text, no letters, no numbers, "
+              "no words, no watermark, no signature."),
 }
 
 HOUSE_RULES = ("wide landscape composition; extremely minimal: one subject + "

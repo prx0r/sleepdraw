@@ -7,7 +7,9 @@ import sys
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TECHDOU = os.path.join(HERE, "vendor", "techdou")
 KNOB_KEYS = ("WB_SKIP", "WB_SKETCH_W", "WB_COLOR_W", "WB_HOLD_S", "WB_BG",
-             "WB_SKETCH_LIGHT", "WB_SPLIT", "WB_BRUSH", "WB_SMOOTH")
+             "WB_SKETCH_LIGHT", "WB_SPLIT", "WB_BRUSH", "WB_SMOOTH",
+             "WB_RHYTHM", "WB_LINE", "WB_ACTS", "WB_GOLD", "WB_ACT_PAUSE_S",
+             "WB_AA", "WB_INK")
 
 
 def crop_169(src, dest):
