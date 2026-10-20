@@ -1,3 +1,5 @@
+> Repo topology: see /root/damn/AGENT-START-HERE.md (three repos: damn=channels+judgment, influence=platform+hands, sleepdraw=this workshop). Secrets never in repo; timers in system crontab; absolute paths bind all three.
+
 # AGENTS.md — sleepdraw (read first, every session)
 
 Tiny engine room for the sleep B&W slow-draw style. `lora1.yaml` + `lora2.yaml` are law.
