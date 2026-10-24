@@ -36,9 +36,8 @@ def etch(src_path, dest_path, detail=0.55, softness=2, invert_bg=True,
     if invert_bg:
         pass  # Canny edges are already white-on-black: our canvas
     else:
-        bg = np.full_like(edges, 246)
-        edges = cv2.merge([bg, bg, bg])
-        return cv2.imwrite(dest_path, edges)
+        edges = cv2.bitwise_not(edges)  # black ink on paper white
+        return cv2.imwrite(dest_path, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR))
     cv2.imwrite(dest_path, cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR))
     return dest_path
 

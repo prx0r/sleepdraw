@@ -19,6 +19,7 @@ sys.path.insert(0, HERE)
 import yaml  # noqa: E402
 from sleepdraw import art as _art, draw as _draw, ship as _ship  # noqa: E402
 from sleepdraw import storyboard as _board  # noqa: E402
+from sleepdraw import finish as _finish  # noqa: E402
 
 
 def _cf():
@@ -76,6 +77,20 @@ def cmd_shot(a):
         print("shipped:", _ship.publish(mp4, f"{data['name']}-ch{a.n:02d}", recipe, prefix))
     else:
         print("(no-ship)")
+
+
+def cmd_finish(a):
+    stamp = time.strftime("%H%M%S")
+    rundir = os.path.join(HERE, "runs", f"{a.name}-{stamp}")
+    os.makedirs(rundir, exist_ok=True)
+    sketch = a.sketch if os.path.isabs(a.sketch) else os.path.join(HERE, a.sketch)
+    constr = a.construction if os.path.isabs(a.construction) else os.path.join(HERE, a.construction)
+    out = os.path.join(rundir, "finished.jpg")
+    _finish.finish(sketch, constr, out, prompt_extra=a.prompt, style=a.style)
+    recipe = {"stage": "finish", "sketch": a.sketch, "construction": a.construction,
+              "prompt": a.prompt, "style": a.style, "model": "flux-kontext-dev/fal"}
+    json.dump(recipe, open(os.path.join(rundir, "recipe.json"), "w"), indent=1)
+    print("finished:", out)
 
 
 def cmd_new(a):
@@ -194,6 +209,12 @@ def main():
     n.add_argument("--script", default="")
     st = sub.add_parser("status")
     st.add_argument("--name", required=True)
+    f = sub.add_parser("finish")
+    f.add_argument("--sketch", required=True, help="human hand to imitate (path)")
+    f.add_argument("--construction", required=True, help="geometry to keep (path)")
+    f.add_argument("--name", required=True)
+    f.add_argument("--prompt", default="", help="extra instruction appended to the house finish")
+    f.add_argument("--style", default="thangka", choices=["thangka", "alchemy"])
     sub.add_parser("lora1")
     a = p.parse_args()
     if a.cmd == "lora1":
@@ -209,6 +230,8 @@ def main():
             print(f"  ch{c['n']:02d} @{c['start_min']}min ({c['words']}w) seed: {', '.join(c['seed'])}")
     elif a.cmd == "shot":
         cmd_shot(a)
+    elif a.cmd == "finish":
+        cmd_finish(a)
     else:
         if not a.prompt and not a.image:
             sys.exit("need --prompt or --image")
