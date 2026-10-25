@@ -108,3 +108,124 @@ Yuki-Onna text measured: 7,968 chars, 11-12 min, $0.08 Eleven v4 (/tmp files).
 Open threads: FAL_KEY missing (Uni-1 masters, img2img stages, Inworld shootout).
 Morph/overdraw/boil/hatchfill/inkwash/pen-scratch/checkpoint-scheduler/longform
 → docs/ROADMAP.md. Yuki film assembly → films/yuki/.
+
+---
+
+# HANDOVER — session 2026-10-25 (journey engine + engine comparison)
+
+Read this + AGENTS.md + docs/JOURNEY-AXIOMS.md + docs/JOURNEY-LIBRARY.md.
+
+## What shipped this session
+
+### 1. Journey pipeline (the core deliverable)
+
+**`progressive_journey.py`** — THE ANSWER. 12 pixel-registered checkpoints →
+one continuous drawing video in **15 seconds** (pure numpy/OpenCV, no GPU,
+no model). Component-by-component reveal: stage N is the base, stage N+1's
+diff pixels appear largest-first over 40 frames. No fades, no black, no
+canvas reset. Result: 520 frames, 34.7s, 1.2MB.
+
+```bash
+python3 progressive_journey.py --out journey.mp4
+```
+
+- **`continuous_journey.py`** (v1, superseded) — used techdou per transition,
+  too slow (2h) and too much disk (libpng errors at 97% disk). Kept for reference.
+- **`continuous_journey_v2.py`** — parallel techdou renders + streaming composite.
+  Not tested to completion (disk died at transition 8). Faster but still heavy.
+
+### 2. The 14 journey axioms
+
+**`axioms.py`** — programmable validation gates. Each axiom is a function
+(prev_img, next_img, ...) → (pass, detail). Post-hoc validators for: exact
+endpoints (hash), stroke continuity (edge overlap), small transitions (density
+ratio), conserved geometry (SSIM), material continuity (saturation), progressive
+colour (saturation monotonic), locality (changed regions), hidden work (new ink
+in empty space), final convergence (SSIM to target). Prompt-encoded: artist
+causality, cumulative progress, purposeful exploration, continuous identity,
+no arbitrary quota. `encode_prompt(stage, total)` builds the model prompt suffix.
+
+**docs/JOURNEY-AXIOMS.md** — full text of all 14 + the 8-stage reference trajectory.
+
+### 3. Journey-pair database (2,290 entries)
+
+**`storyboards/journey-pairs.json`** — 2,287 CIRThan pairs + 3 owner storyboards.
+Each entry: start/end zip_keys (ranged-read from R2 zips, ~5s each, zero disk),
+subject, level1/2/3 captions, essay mapping (531 devotion, 315 rebirth, 263
+energy, 177 roots, 110 yogini, 302 Trika-adjacent). Captions in
+`storyboards/cirthan/` (from github.com/jinyuxu-whut/CIRThan). Paper saved.
+
+### 4. Three owner storyboard prototypes (the reference examples)
+
+`storyboards/01-stage-01..12.png` + `manifest.json` — three 12-stage journeys
+(GEOMETRY TO GESTURE / FLOW OF MUSIC / HALO BECOMES A GARDEN). Pixel-registered,
+620x900, with exact_source/exact_target constraints. **These ARE the checkpoints.**
+
+### 5. Engine comparison (same sketch, 4 engines)
+
+| Engine | Style | Key finding |
+|--------|-------|-------------|
+| whiteboard-video-engine | crisp pen + hand + contour-wipe colour | **best for journey** (colour grows from drawing) |
+| whiteboard-animator | flat, fast monochrome | good for quick previews |
+| techdou lora1 | beige paper, white-on-black glow | sleep-channel minimal |
+| techdou lora2 | black canvas, slow shade fill | **sleep-channel etched (stays)** |
+
+Installed at `/root/engines/` (venv: `/root/engines/.venv`), 7 repos cloned.
+whiteboard-video-engine has `--source-image` for colour reveal from reference +
+30 style presets + hand cursors. whiteboard-animator: `pip install whiteboard-animator`.
+
+### 6. Bailian/Qwen image models (Singapore workspace)
+
+Config: `/root/.bailian/config.json` (workspace endpoint, NOT dashscope-intl).
+Worker `/journey` endpoint accepts `{image_url|image_urls[], prompt, model, seed, size}`.
+Chat detects model names: `wan2.7-image`, `qwen-image-2.1-turbo`, etc.
+
+Prices (CNY → USD ≈ ×0.14): turbo 0.10 · qwen3.0 0.18 · wan2.7 0.20 (fastest, 9s) ·
+qwen3.0-pro 0.25 · wan2.7-pro 0.50 · qwen2.0-pro 0.50 (n=6 outputs).
+
+**wan2.7-image multi-panel**: generated an 8-panel storyboard grid from sketch+final
+in ONE call — the checkpoint generator.
+
+### 7. Six-step deity tutorial
+
+`assets/six-step-deity-tutorial.png` — owner's construction reference (6 stages:
+original → ghost reposition → rebuild anatomy → structure → details → final ink).
+Encoded as stage archetypes in AGENTS.md.
+
+### 8. Axioms encoded in repo
+
+AGENTS.md: pipeline section (validate → etch transitions → chain).
+docs/JOURNEY-AXIOMS.md: pipeline summary + axiom table.
+journey.py: docstring marks it PROTOTYPE (API generation → replace with checkpoint etching).
+skills/JOURNEY.md (quill-app): journey director skill with axioms.
+
+## Open threads
+
+- **progressive_journey.py** is the production pipeline. Test on other pairs
+  (fetch pair from zip → progressive_journey → watch).
+- **Engine choice**: whiteboard-video-engine for colour-reveal stages; progressive
+  for structure stages. Possible hybrid: progressive for line stages, whiteboard
+  for colour stages.
+- **wan2.7-image multi-panel** can generate fresh 12-stage checkpoints from
+  sketch+final in one call — test with n=6 twice for 12.
+- **FAL_KEY** still missing (ROADMAP item 6).
+- **Disk**: 97% full. Old runs in `runs/` can be cleaned (portrait 165M,
+  yuki-* ~50M each). Engine test debris in /root/engines (~490M).
+- **quill-app canvas**: persistent chat, journey model selection, video embeds
+  all live. AGENTS.md in manuscriptAI/ has full docs.
+
+## Key commands
+
+```bash
+# Journey pipeline (the main thing)
+python3 /root/sleepdraw/progressive_journey.py --out /tmp/journey.mp4
+
+# Extract a pair from R2 zips (ranged read, ~5s)
+python3 -c "import sys; sys.path.insert(0,'/root/sleepdraw'); ..."  # see journey-pairs.json keys
+
+# Bailian image edit
+bl image edit --image <r2_url> --prompt "..." --out-dir /tmp
+
+# Engine comparison
+/root/engines/.venv/bin/whiteboard render-image sketch.png --source-image final.png --color-fill contour-wipe -o out.mp4
+```
