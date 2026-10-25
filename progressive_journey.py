@@ -28,6 +28,8 @@ import numpy as np
 def diff_mask(prev, next, thresh=25):
     p = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY) if len(prev.shape) == 3 else prev
     n = cv2.cvtColor(next, cv2.COLOR_BGR2GRAY) if len(next.shape) == 3 else next
+    if p.shape != n.shape:
+        n = cv2.resize(n, (p.shape[1], p.shape[0]))
     diff = cv2.absdiff(p, n)
     _, m = cv2.threshold(diff, thresh, 255, cv2.THRESH_BINARY)
     return cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
@@ -54,6 +56,8 @@ def reveal_frame(base, target, comp_masks, progress, partial_mask):
     partial_mask: bool array tracking which diff pixels are revealed so far
     """
     frame = base.copy()
+    if target.shape != frame.shape:
+        target = cv2.resize(target, (frame.shape[1], frame.shape[0]))
     # Determine how many components to reveal at this progress
     n_comp = len(comp_masks)
     n_show = int(progress * n_comp)

@@ -1,124 +1,142 @@
 {
- "assets": [
-  {
-   "file": "assets/moon-lora1-flux-pencil.jpg",
-   "tags": [
-    "moon",
-    "water",
-    "minimal"
-   ],
-   "motif": "moon",
-   "anchor": true,
-   "channel": "all",
-   "used_in": [
-    "sleep-draw-30s-moon-v1..v4"
-   ]
-  },
-  {
-   "file": "assets/farm-lora2-flux-pencil.jpg",
-   "tags": [
-    "moon",
-    "farm",
-    "barn",
-    "valley",
-    "night"
-   ],
-   "motif": "valley",
-   "anchor": false,
-   "channel": "all",
-   "used_in": [
-    "sleep-etch-2min-farm-slowfill"
-   ]
-  },
-  {
-   "file": "assets/corbin-garden-lora2-flux-pencil.jpg",
-   "tags": [
-    "moon",
-    "garden",
-    "pool",
-    "lantern",
-    "cypress",
-    "stars"
-   ],
-   "motif": "garden",
-   "anchor": false,
-   "channel": "corbin",
-   "used_in": []
-  },
-  {
-   "file": "assets/ref-mihrab1354-etch.jpg",
-   "tags": [
-    "mihrab",
-    "girih",
-    "arch",
-    "reference"
-   ],
-   "motif": "mihrab",
-   "anchor": false,
-   "channel": "corbin",
-   "used_in": [],
-   "source": "Met 449537, 1354 CE, public domain"
-  },
-  {
-   "file": "assets/corbin-paradise-lucid-pencil.jpg",
-   "tags": [
-    "charbagh",
-    "garden",
-    "pool",
-    "arcade",
-    "moon",
-    "birds",
-    "roses"
-   ],
-   "motif": "paradise-garden",
-   "anchor": false,
-   "channel": "corbin",
-   "used_in": []
-  }
- ],
- "refs": [
-  {
-   "id": "Met 449537",
-   "what": "Mihrab, 1354 CE",
-   "tags": [
-    "mihrab",
-    "girih"
-   ]
-  },
-  {
-   "id": "Met 452193",
-   "what": "Senneh prayer rug, 18-19th c.",
-   "tags": [
-    "rug",
-    "mihrab",
-    "pattern"
-   ]
-  },
-  {
-   "id": "Met 447572",
-   "what": "Bellini carpet, 16-17th c.",
-   "tags": [
-    "rug",
-    "pattern"
-   ]
-  },
-  {
-   "id": "Met 452670",
-   "what": "Miraj folio, 1525",
-   "tags": [
-    "miraj",
-    "veil",
-    "angels"
-   ]
-  }
- ],
- "refsets": [
-  {
-   "channel": "corbin",
-   "set": "sultan-world",
-   "dir": "assets/refs-corbin/",
-   "count": 6,
-   "rule": "generate in sets of 5 per world; bank winners; each channel gets its own set (abhinavagupta next)"
-  }
- ]
+  "assets": [
+    {
+      "file": "assets/moon-lora1-flux-pencil.jpg",
+      "tags": [
+        "moon",
+        "water",
+        "minimal"
+      ],
+      "motif": "moon",
+      "anchor": true,
+      "channel": "all",
+      "used_in": [
+        "sleep-draw-30s-moon-v1..v4"
+      ]
+    },
+    {
+      "file": "assets/farm-lora2-flux-pencil.jpg",
+      "tags": [
+        "moon",
+        "farm",
+        "barn",
+        "valley",
+        "night"
+      ],
+      "motif": "valley",
+      "anchor": false,
+      "channel": "all",
+      "used_in": [
+        "sleep-etch-2min-farm-slowfill"
+      ]
+    },
+    {
+      "file": "assets/corbin-garden-lora2-flux-pencil.jpg",
+      "tags": [
+        "moon",
+        "garden",
+        "pool",
+        "lantern",
+        "cypress",
+        "stars"
+      ],
+      "motif": "garden",
+      "anchor": false,
+      "channel": "corbin",
+      "used_in": []
+    },
+    {
+      "file": "assets/ref-mihrab1354-etch.jpg",
+      "tags": [
+        "mihrab",
+        "girih",
+        "arch",
+        "reference"
+      ],
+      "motif": "mihrab",
+      "anchor": false,
+      "channel": "corbin",
+      "used_in": [],
+      "source": "Met 449537, 1354 CE, public domain"
+    },
+    {
+      "file": "assets/corbin-paradise-lucid-pencil.jpg",
+      "tags": [
+        "charbagh",
+        "garden",
+        "pool",
+        "arcade",
+        "moon",
+        "birds",
+        "roses"
+      ],
+      "motif": "paradise-garden",
+      "anchor": false,
+      "channel": "corbin",
+      "used_in": []
+    },
+    {
+      "file": "assets/six-step-deity-tutorial.png",
+      "tags": [
+        "deity",
+        "construction",
+        "tutorial",
+        "pipeline",
+        "checkpoint",
+        "six-step",
+        "reference"
+      ],
+      "motif": "construction-pipeline",
+      "anchor": true,
+      "channel": "all",
+      "used_in": [],
+      "source": "stallshark R2 bucket (owner upload 2026-10-24)",
+      "note": "Six-stage construction reference: original\u2192ghost reposition\u2192rebuild anatomy\u2192structure\u2192details\u2192final ink. Maps directly to ROADMAP checkpoint scheduler (staged reveals by fidelity). Structural vs detail transitions = the core engine problem."
+    }
+  ],
+  "refs": [
+    {
+      "id": "Met 449537",
+      "what": "Mihrab, 1354 CE",
+      "tags": [
+        "mihrab",
+        "girih"
+      ]
+    },
+    {
+      "id": "Met 452193",
+      "what": "Senneh prayer rug, 18-19th c.",
+      "tags": [
+        "rug",
+        "mihrab",
+        "pattern"
+      ]
+    },
+    {
+      "id": "Met 447572",
+      "what": "Bellini carpet, 16-17th c.",
+      "tags": [
+        "rug",
+        "pattern"
+      ]
+    },
+    {
+      "id": "Met 452670",
+      "what": "Miraj folio, 1525",
+      "tags": [
+        "miraj",
+        "veil",
+        "angels"
+      ]
+    }
+  ],
+  "refsets": [
+    {
+      "channel": "corbin",
+      "set": "sultan-world",
+      "dir": "assets/refs-corbin/",
+      "count": 6,
+      "rule": "generate in sets of 5 per world; bank winners; each channel gets its own set (abhinavagupta next)"
+    }
+  ]
 }
