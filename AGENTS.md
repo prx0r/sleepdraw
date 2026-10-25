@@ -151,3 +151,57 @@ actually generated.
 | `journey.py` | Full pipeline (currently prototype — uses API generation; **REPLACE with checkpoint-based etching once validated**) |
 | `sleepdraw/sequence.py` | Chain transitions with contemplative fades |
 | `docs/JOURNEY-AXIOMS.md` | The 14 axioms (full text) |
+
+## File map (every file, one line, why it exists)
+
+**Pipeline:**
+- `progressive_journey.py` — **PRODUCTION** 12 checkpoints → continuous video, 15s, no deps
+- `axioms.py` — 14 validation gates + encode_prompt() for model prompts
+- `journey.py` — prototype API stage generator (replace with checkpoint etching)
+- `continuous_journey.py` / `continuous_journey_v2.py` — abandoned techdou approaches (historical)
+
+**Checkpoints & pairs:**
+- `storyboards/journey-pairs.json` — 2,290 labeled pairs (start/end zip_keys, captions, essay map)
+- `storyboards/cirthan/` — CIRThan 3-level captions + splits (GitHub clone)
+- `storyboards/0{1,2,3}-stage-*.png` + `manifest.json` — owner's 12-stage prototypes (THE checkpoints)
+- `storyboards/journey-database.json` — flat essay→subject→caption index
+- `storyboards/CIRThan-paper.md` — the paper (arxiv 2602.08411)
+
+**Docs:**
+- `docs/JOURNEY-AXIOMS.md` — 14 axioms + 8-stage reference + pipeline
+- `docs/JOURNEY-LIBRARY.md` — all sources (CIRThan, HAR, iconometry, Kaggle, Trika)
+- `docs/BAILIAN-STACK.md` — Bailian CLI, endpoint quirks, URL-not-local gotcha
+- `docs/ROADMAP.md` — engine build order, FAL_KEY tracks, longform
+- `HANDOVER.md` — session log; `HANDOVER-NEXT.md` — **START HERE**
+
+**Presets (locked):**
+- `lora1.yaml` pen · `lora2.yaml` etched · `lora2-corbin.yaml` imaginal · `lora3.yaml` fineliner
+
+**Pipeline code:**
+- `sleepdraw/art.py` FLUX generation · `sleepdraw/etched.py` real-image→etch (invert_bg bug fixed this session)
+- `sleepdraw/draw.py` techdou render · `sleepdraw/sequence.py` fade-chain clips
+- `sleepdraw/finish.py` Bailian Kontext multi-ref finish · `sleepdraw/ship.py` R2 upload
+- `sleepdraw/storyboard.py` board→chapters · `cli.py` make/shot/board/finish/status
+
+**Assets & refs:**
+- `assets/six-step-deity-tutorial.png` — 6-stage construction reference (stallshark)
+- `assets/library.json` — tagged reference art registry
+- `poller.py` — R2 test-channel poller (dashboard)
+
+## External engines (/root/engines, not in this repo — 967MB incl venv)
+
+7 cloned drawing-animation engines for the journey. venv: `/root/engines/.venv`.
+
+| Repo | Job | Install |
+|------|-----|---------|
+| `whiteboard-video-engine` | stroke-by-stroke + contour-wipe colour from source image, 30 styles | editable install in venv |
+| `whiteboard-animator` | quick single-image hand-drawn previews (CPU) | pip in venv |
+| `Sketch2Motion` | Manim colour-layer animation (needs potrace+manim) | not installed |
+| `PaintTransformer` | neural brush strokes (needs torch+weights) | not installed |
+| `plottter` | hatching/stipple algorithms (SVG out, no MP4) | not installed |
+| `daub` | Rust brush plans + MCP tools — **commercial license required** | not built |
+| `codex-whiteboard-video-skill` | agent skill driving whiteboard-video-engine | docs only |
+
+**Job split:** journeys → `progressive_journey.py` (production) or whiteboard-video-engine
+(colour reveal). sleep-channel etch → techdou (lora1/2/3). Never mix: journeys are
+light-paper continuous; sleep channels are white-on-black with fade-outs.
