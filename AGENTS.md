@@ -84,3 +84,70 @@ Or via quill worker: `POST /journey {image_url, prompt}`.
 Pre-processing: take CIRThan plate → one `bl image edit` with organic-border
 prompt → use as journey endpoint (instead of rigid plate). Pair 68 has this
 banked as `journey/68-final-organic.png`.
+
+## THE JOURNEY PIPELINE — how it works (make no mistake)
+
+**The 12-step storyboards ARE the checkpoints.** That's it. That's the design.
+
+```
+storyboards/01-stage-01.png ... 01-stage-12.png   ← 12 pixel-registered frames
+         ↓ VALIDATE (axioms.py — 14 gates must pass)
+         ↓ etch each transition (lora2/techdou): stage N canvas + new strokes from N+1
+         ↓ chain with sequence.py (contemplative fades + black holds)
+journey_complete.mp4
+```
+
+### Step by step
+
+1. **PROTOTYPE**: Generate a 12-stage storyboard for a journey pair.
+   - Stages are pixel-registered (620x900), same canvas position throughout.
+   - Stage 1 = original sketch. Stage 12 = exact final painting.
+   - Middle stages = progressive drawing actions (see manifest.json axes).
+   - Owner uploads as `storyboards/NN-stage-*.png` + `manifest.json`.
+
+2. **VALIDATE**: Run `axioms.py validate_stage()` on every consecutive pair.
+   - All 14 axioms must pass before the journey is usable.
+   - `encode_prompt()` feeds axioms into any stage regeneration.
+   - Failing stages get regenerated, NOT skipped (axiom 14: no arbitrary quota).
+
+3. **ETCH**: For each transition (stage N → N+1):
+   - Start with stage N as the canvas (white-on-black after inversion).
+   - Compute the pixel diff: new strokes = pixels in N+1 that aren't in N.
+   - Animate drawing ONLY those new strokes onto the stage N canvas.
+   - This is the artist adding to what's already there — axiom 2 compliant.
+   - Rendered by lora2/techdou at finest settings (COLOR_W=3, BRUSH=10).
+
+4. **CHAIN**: `sequence.py` links the 11 transitions with fades (2-4s) and
+   black holds (2-3s). Each clip starts FROM black — the fade-in IS the
+   emergence of the next stage's strokes.
+
+5. **VALIDATE OUTPUT**: Final video must preserve both endpoints exactly
+   (axiom 1) and show continuous identity (axiom 12).
+
+### The 12 stages (from manifest.json — each journey follows this grammar)
+
+| Stage | Name | What happens |
+|-------|------|-------------|
+| 01 | SOURCE | original sketch, untouched |
+| 02 | READ/EXPLORE | construction circles, axes, guides |
+| 03 | REPAIR | erase wrong proportions, keep useful guides |
+| 04 | ANCHOR/STRUCTURE | figure geometry locked, contours established |
+| 05 | DETAIL | features, ornament, clothing |
+| 06 | INK | line work completes, first warm accents |
+| 07-11 | COLOUR | grows from drawing, one region at a time |
+| 12 | TARGET | exact final painting, unchanged |
+
+The number 12 is REFERENCE, not a quota (axiom 14). A journey needing 15
+stages gets 15. One needing 8 gets 8. The manifest records whatever was
+actually generated.
+
+### Key files
+
+| File | Role |
+|------|------|
+| `storyboards/manifest.json` | Stage axes + frame labels per journey |
+| `storyboards/NN-stage-*.png` | The pixel-registered checkpoints |
+| `axioms.py` | 14 validation gates + encode_prompt() |
+| `journey.py` | Full pipeline (currently prototype — uses API generation; **REPLACE with checkpoint-based etching once validated**) |
+| `sleepdraw/sequence.py` | Chain transitions with contemplative fades |
+| `docs/JOURNEY-AXIOMS.md` | The 14 axioms (full text) |

@@ -1,13 +1,18 @@
-"""journey.py — generate checkpoint images, etch each with lora2, chain them.
+"""journey.py — PROTOTYPE pipeline. Replace generation phase once validated.
 
-Two-phase per stage:
-  1. GENERATE: bl image edit / Bailian → stage images (each feeds the next)
-  2. ETCH: techdou lora2 renders each stage as a draw animation
-  3. CHAIN: sequence.py links them with contemplative fades
+THE PIPELINE (see AGENTS.md):
+  1. Prototype: 12 pixel-registered storyboard frames (owner uploads)
+  2. Validate: axioms.py — all 14 gates must pass
+  3. Etch: stage N canvas + diff-strokes from N+1 (lora2/techdou finest)
+  4. Chain: sequence.py → journey_complete.mp4
+
+Validated frames are FIXED checkpoints. Etching animates BETWEEN them,
+never regenerating them. This prototype generates stages via API as a
+stopgap — replace with checkpoint-based etching once validation passes.
 
 Usage:
     from journey import run_journey
-    run_journey(sketch_path, final_path, n_stages=5, style="cubist geometric")
+    run_journey(sketch_url, final_url, n_stages=5, style="cubist geometric")
 """
 from __future__ import annotations
 import json

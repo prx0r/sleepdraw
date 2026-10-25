@@ -113,3 +113,20 @@ Do NOT generate eight independently finished pictures.
 | Transform construction → correct contours | No | New capability |
 | Paint selected regions in order | Limited | New capability |
 | Maintain continuity across stages | No | Journey planner + validator |
+
+## The pipeline (crystal clear)
+
+**The 12-step storyboards ARE the checkpoints.** No API generation of stages
+after validation — the validated storyboard frames are the source of truth.
+
+```
+prototype storyboard (12 pixel-registered frames)
+  → VALIDATE (axioms.py, all 14 must pass)
+  → ETCH each transition: stage N as canvas + diff-strokes from N+1 drawn on top
+    (lora2/techdou, finest settings: COLOR_W=3, BRUSH=10, SKIP=8, SMOOTH=1)
+  → CHAIN: sequence.py, fades 2-4s, black holds 2-3s
+  → journey_complete.mp4 (both endpoints exact, continuous identity)
+```
+
+Validation happens ONCE per storyboard. After that, the frames are fixed
+checkpoints — etching animates BETWEEN them, never regenerating them.

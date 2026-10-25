@@ -4,6 +4,21 @@ One style ([lora1](lora1.yaml)), one pipeline: FLUX pencil art → 16:9 crop →
 skeleton-stroke draw → R2 test channel. Lightweight (this repo ≈ 2MB) and
 extensible: new art OR new knobs per round, never both.
 
+
+
+## Journey pipeline (12-step checkpoints)
+
+**The 12-step storyboards ARE the checkpoints.** See `AGENTS.md` for the full flow.
+
+1. Prototype: 12 pixel-registered frames → `storyboards/NN-stage-*.png`
+2. Validate: `axioms.py` — all 14 gates must pass
+3. Etch: stage N canvas + new strokes from N+1 (lora2/techdou finest settings)
+4. Chain: `sequence.py` → `journey_complete.mp4`
+
+Validated frames are FIXED — etching animates between them, never regenerating.
+`journey.py` is a prototype; replace its generation phase with checkpoint-based
+etching once a storyboard passes validation.
+
 ```bash
 pip install -r requirements.txt   # boto3 pillow numpy opencv-python-headless pyyaml
 python3 cli.py make --prompt "small glowing lantern on dark water, extremely minimal, vast black" --name lantern-v1
