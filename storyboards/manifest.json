@@ -1,0 +1,80 @@
+{
+  "01": {
+    "title": "GEOMETRY TO GESTURE",
+    "axis": "Circles, axes, correction, then confident contours",
+    "frames": [
+      "SOURCE / unaltered rough sketch",
+      "READ / find circles, axes and centers",
+      "REPAIR / replace oversized head",
+      "ANCHOR / figure and instrument",
+      "STRUCTURE / finish the surrounding contours",
+      "INK / crown, hands and first warm accents",
+      "FIRST COLOUR / touches of gold",
+      "SKIN AND ROBE / local warm hues",
+      "INSTRUMENT / deep green joins red",
+      "HALO / surrounding blues and greens",
+      "NEAR-FINAL / tiny details remain",
+      "TARGET / supplied painting, unchanged"
+    ],
+    "operation_types": [
+      "draw",
+      "erase",
+      "detail",
+      "fill"
+    ],
+    "exact_source": "original sketch display reframe, no repainting",
+    "exact_target": "final painting rescaled, no repainting"
+  },
+  "02": {
+    "title": "FLOW OF MUSIC",
+    "axis": "Follow the instrument, sleeves and hair as rhythmic strokes",
+    "frames": [
+      "SOURCE / unusual gesture preserved",
+      "RHYTHM / extend instrument and sleeve curves",
+      "REDIRECT / shape arms and ribbons",
+      "FIND / face, crown and the torso",
+      "CONNECT / hair, costume and lotus",
+      "INK / ornament and first vermilion strokes",
+      "WARM ACCENTS / ribbon strokes",
+      "VERMILION / follow flowing fabric",
+      "GOLD AND CREAM / settle the figure",
+      "GREEN / instrument and leaves",
+      "NEAR-FINAL / final flowers and sky",
+      "TARGET / supplied painting, unchanged"
+    ],
+    "operation_types": [
+      "draw",
+      "erase",
+      "detail",
+      "fill"
+    ],
+    "exact_source": "original sketch display reframe, no repainting",
+    "exact_target": "final painting rescaled, no repainting"
+  },
+  "03": {
+    "title": "HALO BECOMES A GARDEN",
+    "axis": "Build the setting outward from circles, petals and branches",
+    "frames": [
+      "SOURCE / first drawing untouched",
+      "GROW / halo rings and botanical guides",
+      "FRAME / add flowers around rough figure",
+      "PLACE / reconstruct the central figure",
+      "COMPLETE / tie ornament to the body",
+      "INK / garden and first leaf-green accents",
+      "LEAVES / the green perimeter grows",
+      "SKY / blue spreads through clouds",
+      "FLOWERS / reds enter the garden",
+      "FIGURE / gold and skin emerge",
+      "NEAR-FINAL / small ornaments remain",
+      "TARGET / supplied painting, unchanged"
+    ],
+    "operation_types": [
+      "draw",
+      "erase",
+      "detail",
+      "fill"
+    ],
+    "exact_source": "original sketch display reframe, no repainting",
+    "exact_target": "final painting rescaled, no repainting"
+  }
+}
