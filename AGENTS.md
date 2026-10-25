@@ -40,3 +40,47 @@ pip install -r requirements.txt
 python3 cli.py make --prompt "<minimal B&W scene>" --name <thing>-v1
 python3 cli.py make --image assets/moon-lora1-flux-pencil.jpg --name moon-check --no-ship
 ```
+
+## Journey library (Artist Journey Engine)
+
+Sketch→final pairs for multi-stage drawing journeys. See `docs/JOURNEY-LIBRARY.md`
+for full source inventory and `docs/JOURNEY-AXIOMS.md` for the 14 validation rules.
+
+| File | What |
+|------|------|
+| `storyboards/journey-pairs.json` | 2,290 labeled pairs (2,287 CIRThan + 3 owner storyboards). Each has: start/end zip_keys, subject, level1/2/3 captions, essay mapping |
+| `storyboards/journey-database.json` | Flat database (essay → subject → captions) |
+| `storyboards/cirthan/` | CIRThan captions + splits (from GitHub jinyuxu-whut/CIRThan) |
+| `storyboards/*.md` | CIRThan paper, three 12-stage prototype storyboards |
+| `docs/BAILIAN-STACK.md` | Alibaba/bailian CLI, endpoint, URL-not-local gotcha |
+| `assets/six-step-deity-tutorial.png` | Six-stage construction reference (from stallshark) |
+
+### Querying pairs
+
+```python
+import json
+db = json.load(open('storyboards/journey-pairs.json'))
+# By essay
+devotion = [e for e in db if e['essay'] == '12-devotion']  # 531 pairs
+# By subject
+tara = [e for e in db if 'green tara' in e['subject'].lower()]
+# Captions: level1 (sketch target), level2 (construction), level3 (final detail)
+```
+
+### Extracting images from zips (ranged read, ~5s, zero disk)
+
+Images live in R2 zips (`uploads/sketch-*.zip` + `uploads/image-*.zip`).
+Use ranged reads: fetch last 4MB for central directory → find member → fetch
+byte range → decompress. See `JOURNEY-LIBRARY.md` for the code pattern.
+
+### Image generation
+
+`bl image edit` (Bailian, qwen-image-3.0) — MUST use URLs, not local paths
+(local upload = 401). Upload to R2, generate presigned URL, pass to `bl`.
+Or via quill worker: `POST /journey {image_url, prompt}`.
+
+### Organic extension
+
+Pre-processing: take CIRThan plate → one `bl image edit` with organic-border
+prompt → use as journey endpoint (instead of rigid plate). Pair 68 has this
+banked as `journey/68-final-organic.png`.
