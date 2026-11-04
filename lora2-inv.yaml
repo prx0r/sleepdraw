@@ -1,0 +1,63 @@
+# lora2-inv — INVERSE parable style for vertical shorts (created 2026-11-04)
+# Black ink sketch on white paper backdrop. Same techdou etch discipline
+# as lora2, inverted: light paper, dark line. Companion to lora2 (etched),
+# NOT a replacement — sleep channels keep white-on-black.
+# Owner directive: Bob Ross rule — one landscape per parable, rendered
+# while the story is listened to. Vertical 9:16 (deliberate exception to
+# sleepdraw's landscape-only law: shorts are vertical, sleep is not).
+name: lora2-inv
+purpose: parable-shorts inverse style (black ink, white paper, vertical)
+
+art:
+  model: qwen-image-3.0
+  style: sketch
+  prefix: "Black ink sketch on warm white paper background, hand-drawn storybook etching — the inverse of white-on-black pencil etching: dense etched detail where it counts, vast breathing white space everywhere else. Fine monochrome grey ink linework. No text, no letters, no numbers, no words."
+  prompt_rules:
+    - "vertical 9:16, single wide scene"
+    - "THE FINAL SNAPSHOT: the story's end-state, freedom rendered — never the struggle, always the arrival"
+    - "rasa encoded in art: stillness as white space, luminosity as dense ink glow, release as upward motion into open sky"
+    - "dense etched detail on the subject; emptiness everywhere else (moon-style negative space, garden-style hand)"
+    - "all greyscale, black ink on white, luminous accents rendered as densest ink"
+    - "no text, no letters, no numbers, no words (garble risk)"
+    - "one world per image: all story elements in a single landscape"
+
+pipeline:
+  size: "1080x1920"
+  orient: portrait
+  # reveal: slow etch-in or gentle Ken Burns over the listening time.
+  # Phase 1 = still + slow zoom. Phase 2 = techdou inverted etch
+  # (white-pipeline etch code paths need inversion — not yet built).
+  reveal: kenburns-slow
+  orient_note: "vertical 9:16 is shorts-only; never for sleep channels"
+
+env:
+  WB_BG: "#FFFFFF"      # PURE white — techdou default #F6F1E3 is cream, override is mandatory
+  WB_BOTTOM_UP: 1        # patch needed in vendored techdou: sort global draw order y-descending
+  WB_HOLD_S: 0           # no hold — the clip ends in a 2s fade-to-white (post, ffmpeg)
+  WB_SKIP: 8
+  WB_SMOOTH: 1          # smooth stroke path (the production mode)
+  WB_SKETCH_LIGHT: 1    # light first pass on light paper
+  WB_SPLIT: 5
+  WB_ACTS: 4            # staged bands: roots/web → horizon+thread → spider, breaths between
+  WB_ACT_PAUSE_S: 1.5   # contemplative breath before each act (spider's breath included)
+  WB_SKETCH_W: 4
+  WB_COLOR_W: 3
+  WB_BRUSH: 10
+  no_hand: true
+post:
+  duration: "= audio length (--duration)"
+  fade: "ffmpeg fade=out:color=white:st=<dur-2>:d=2 + audio afade — clean loop point"
+  subtitles: "burned into the pure-white bottom zone (1080x480), not overlaid on art"
+layout:
+  frame: "9:16 = art 1080x1440 top + white subtitle zone 1080x480 bottom"
+  white_zone_continuous: true   # subtitle zone is sky-continuation, one white field
+
+output:
+  size: "1080x1920"
+  r2_prefix: "parables/"
+  meta: "same-name .json carries full recipe (reproducibility law)"
+
+generation:
+  tool: "bl image generate --model qwen-image-3.0 --size 1080*1920 --seed <n>"
+  tier: "free tier (workspace)"
+  cost: "$0"

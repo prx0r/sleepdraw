@@ -19,6 +19,7 @@ _ASSETS_DIR = _SCRIPT_DIR.parent / "assets"
 HAND_PATH = os.environ.get("WB_HAND", str(_ASSETS_DIR / "drawing-hand.png"))
 
 # === 固定算法参数 ===
+BOTTOM_UP = os.environ.get("WB_BOTTOM_UP", "0") == "1"  # sleepdraw patch: draw bottom->top (rasa: roots first, sky last)
 FRAME_RATE = 60  # 输出视频帧率；越高越流畅，文件体积和生成帧数也会增加
 SPLIT_LEN = int(os.environ.get("WB_SPLIT", "10"))  # 网格切分边长（像素）；越小绘制越细，计算量越大
 MAX_1080P = True  # 是否将输入图最长边限制到 1080 像素，保证输出分辨率可控
@@ -1110,8 +1111,10 @@ def build_draw_order(active_grid, layout_blocks=None):
         layout_blocks = build_layout_blocks(active_grid)
 
     ordered_cells = []
-    for block in layout_blocks:
-        ordered_cells.extend(block["draw_order"])
+    blocks = reversed(layout_blocks) if BOTTOM_UP else layout_blocks
+    for block in blocks:
+        order = list(reversed(block["draw_order"])) if BOTTOM_UP else block["draw_order"]
+        ordered_cells.extend(order)
     return ordered_cells
 
 
@@ -1258,6 +1261,8 @@ def _act_reorder(pts, acts):
     ys = pts[:, 1]
     edges = np.linspace(ys.min(), ys.max() + 1, acts + 1)
     act = np.clip(np.searchsorted(edges, ys, side="right") - 1, 0, acts - 1)
+    if BOTTOM_UP:  # sleepdraw patch: bottom band first — rasa: roots, then web, then thread, spider last
+        act = (acts - 1) - act
     order = np.argsort(act, kind="stable")
     re_act = act[order]
     bounds = [i for i in range(1, len(order)) if re_act[i] != re_act[i - 1]]
